@@ -1,0 +1,17 @@
+# compiled output
+.vscode
+/node_modules
+
+# code formatter
+.eslintrc
+.eslintignore
+.editorconfig
+
+.prettierrc
+
+# test
+jest.config.js
+
+# docker
+Dockerfile
+docker-compose.yml

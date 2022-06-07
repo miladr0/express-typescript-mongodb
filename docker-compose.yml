@@ -1,0 +1,32 @@
+version: '3.7'
+services:
+  server:
+    build:
+      context: ./
+      target: dev-build-stage
+      dockerfile: Dockerfile
+    container_name: server
+    ports:
+      - '3001:3001'
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    restart: 'unless-stopped'
+    networks:
+      - backend
+    depends_on:
+      - mongodb
+
+  mongodb:
+    container_name: database
+    image: mongo:5.0
+    ports:
+      - 27017:27017
+    volumes:
+      - ~/apps/mongo:/data/db
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge

@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+        /* Basic Options */
+        "incremental": true,
+        "target": "ES2017",
+    "module": "commonjs",
+    "sourceMap": true,
+    "outDir": "dist",
+        /* Strict Type-Checking Options */
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "strictFunctionTypes": true,
+        "strictBindCallApply": true,
+        "noImplicitThis": true,
+        "alwaysStrict": true,
+    
+        /* Additional Checks */
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "baseUrl": "src",
+    "paths": {
+      "@app": ["app"],
+      "@config": ["config"],
+      "@middlewares/*": ["middlewares/*"],
+      "@models/*": ["models/*"],
+      "@common/*": ["common/*"],
+      "@exceptions/*": ["exceptions/*"],
+      "@v1/*": ["api/v1/*"],
+      "@__tests__/*": ["__tests__/*"]
+    }
+  }
+}
