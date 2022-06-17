@@ -1,5 +1,6 @@
-import { Types } from 'mongoose';
 import { faker } from '@faker-js/faker';
+import { Types } from 'mongoose';
+
 import Profile, { IProfile } from '@models/profiles.model';
 
 export async function profileFactory(profile: Partial<IProfile> = {}) {

@@ -12,5 +12,5 @@ export default interface CRUD<T> {
       page: number;
     };
   }>;
-  getById: (id: string) => Promise<any>;
+  getById: (id: string) => Promise<T | null>;
 }

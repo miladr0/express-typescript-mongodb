@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
-import Simulator, { ISimulator } from '@models/simulators.model';
 import { Types } from 'mongoose';
+
+import Simulator, { ISimulator } from '@models/simulators.model';
 
 export async function simulatorFactory(simulator: Partial<ISimulator> = {}) {
   return Simulator.create({

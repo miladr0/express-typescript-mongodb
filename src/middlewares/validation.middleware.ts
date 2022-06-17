@@ -1,6 +1,7 @@
 import { plainToInstance } from 'class-transformer';
 import { validate, ValidationError } from 'class-validator';
 import { RequestHandler } from 'express';
+
 import HttpException from '@exceptions/HttpException';
 
 const getAllNestedErrors = (error: ValidationError) => {

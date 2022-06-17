@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from 'express';
-import { StatusCodes, getReasonPhrase } from 'http-status-codes';
+import { NextFunction, Request, Response } from 'express';
+import { getReasonPhrase, StatusCodes } from 'http-status-codes';
 const handlingErrors = (error: any, req: Request, res: Response, next: NextFunction) => {
   try {
     const statusCode: number = error.status || StatusCodes.INTERNAL_SERVER_ERROR;

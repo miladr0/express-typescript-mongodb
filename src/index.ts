@@ -1,7 +1,8 @@
-import App from './app';
-import { FavoriteControllerV1, ProfileControllerV1, SimulatorControllerV1 } from '@v1/index';
+import { AuthControllerV1 } from '@v1/index';
 
-const server = new App([FavoriteControllerV1, ProfileControllerV1, SimulatorControllerV1]);
+import App from './app';
+
+const server = new App([AuthControllerV1]);
 
 (async () => {
   await server.initServerWithDB();

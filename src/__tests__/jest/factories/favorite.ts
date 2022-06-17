@@ -1,6 +1,7 @@
-import Favorite, { IFavorite } from '@models/favorites.model';
 import { faker } from '@faker-js/faker';
 import { Types } from 'mongoose';
+
+import Favorite, { IFavorite } from '@models/favorites.model';
 
 export async function favoriteFactory(favorite: Partial<IFavorite> = {}) {
   return Favorite.create({

@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
+
+import { DBURL } from '@config';
+import Favorite from '@models/favorites.model';
 import Profile from '@models/profiles.model';
 import Simulator from '@models/simulators.model';
-import Favorite from '@models/favorites.model';
-import { DBURL } from '@config';
 
 (async () => {
   try {

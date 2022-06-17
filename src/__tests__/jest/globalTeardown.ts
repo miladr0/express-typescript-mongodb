@@ -1,4 +1,5 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
+
 import config from './config';
 
 export default async function globalTeardown() {

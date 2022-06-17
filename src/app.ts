@@ -1,26 +1,24 @@
-import 'reflect-metadata';
-import { PORT, DBURL, CORS_ORIGINS, CREDENTIALS, isProduction, SENTRY_DSN } from './config';
-
-import './tracer';
-
 import * as Sentry from '@sentry/node';
-
+import bodyParser from 'body-parser';
+import { defaultMetadataStorage as classTransformerDefaultMetadataStorage } from 'class-transformer/cjs/storage';
+import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
 import express, { Application, ErrorRequestHandler, RequestHandler } from 'express';
 import helmet from 'helmet';
 import hpp from 'hpp';
-import cors from 'cors';
-import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
+import http from 'http';
 import mongoose from 'mongoose';
-import { defaultMetadataStorage as classTransformerDefaultMetadataStorage } from 'class-transformer/cjs/storage';
-import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
-import { useExpressServer, getMetadataArgsStorage } from 'routing-controllers';
+import { getMetadataArgsStorage, useExpressServer } from 'routing-controllers';
 import { routingControllersToSpec } from 'routing-controllers-openapi';
 import swaggerUi from 'swagger-ui-express';
 
 import handlingErrorsMiddleware from './middlewares/handlingErrors.middleware';
+import { CORS_ORIGINS, CREDENTIALS, DBURL, isProduction, PORT, SENTRY_DSN } from './config';
 
-let connection;
+import 'reflect-metadata';
+
+let serverConnection: http.Server;
 
 export default class App {
   private app: Application;
@@ -116,10 +114,10 @@ export default class App {
 
   public initWebServer = async () => {
     return new Promise(resolve => {
-      connection = this.app.listen(this.port, () => {
+      serverConnection = this.app.listen(this.port, () => {
         console.log(`✅  Ready on port http://localhost:${this.port}`);
 
-        resolve(connection.address());
+        resolve(serverConnection.address());
       });
     });
   };
@@ -130,7 +128,7 @@ export default class App {
 
   public stopWebServer = async () => {
     return new Promise(resolve => {
-      connection.close(() => {
+      serverConnection.close(() => {
         resolve(void 0);
       });
     });
