@@ -1,4 +1,3 @@
-import { JSONSchema } from 'class-validator-jsonschema';
 import { Body, HttpCode, JsonController, Post, UseBefore } from 'routing-controllers';
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
 
@@ -6,10 +5,12 @@ import { validationMiddleware } from '@middlewares/validation.middleware';
 import { IUser } from '@models/users.model';
 import { AuthService, TokenService, UserService } from '@services/v1';
 
+import ForgotPasswordDto from './dtos/forgotPassword.dto';
 import LoginDto, { LoginResponseSchema } from './dtos/login.dto';
 import LogoutDto from './dtos/logout.dto';
 import RefreshTokenDto from './dtos/refreshToken.dto';
 import RegisterDto from './dtos/register.dto';
+import ResetPasswordDto from './dtos/resetPassword.dto';
 
 @JsonController('/v1/auth', { transformResponse: false })
 export class AuthController {
@@ -60,12 +61,23 @@ export class AuthController {
     return { ...result };
   }
 
-  // @Post('/forgot-password')
-  // @OpenAPI({ summary: 'a token to use for set a new password' })
-  // @UseBefore(validationMiddleware(RefreshTokenDto, 'body'))
-  // async forgotPassword(@Body() userData: RefreshTokenDto) {
-  //   const result = await this.authService.refreshAuth(userData.refreshToken);
+  @Post('/forgot-password')
+  @OpenAPI({ summary: 'send reset token to reset the password' })
+  @UseBefore(validationMiddleware(ForgotPasswordDto, 'body'))
+  async forgotPassword(@Body() userData: ForgotPasswordDto) {
+    const token = await this.tokenService.generateResetPasswordToken(userData.email);
 
-  //   return { ...result };
-  // }
+    // should use email service to send the token to email owner, not return it!
+    return { token };
+  }
+
+  @Post('/reset-password')
+  @OpenAPI({ summary: 'reset user password' })
+  @UseBefore(validationMiddleware(ResetPasswordDto, 'body'))
+  async resetPassword(@Body() userData: ResetPasswordDto) {
+    await this.authService.resetPassword(userData.token, userData.password);
+
+    // should use email service to send the token to email owner, not return it!
+    return { message: 'password successfully updated' };
+  }
 }

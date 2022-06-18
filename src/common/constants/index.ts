@@ -6,4 +6,5 @@ export enum MODELS {
 export enum TokenTypes {
   ACCESS = 'access',
   REFRESH = 'refresh',
+  RESET_PASSWORD = 'resetPassword',
 }

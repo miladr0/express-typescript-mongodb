@@ -1,8 +1,5 @@
 import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 
-import { IToken } from '@models/tokens.model';
-import { IUser } from '@models/users.model';
-
 export default class LoginDto {
   @IsNotEmpty()
   @IsEmail()

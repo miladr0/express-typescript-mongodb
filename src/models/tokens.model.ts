@@ -1,4 +1,4 @@
-import { IsBoolean, IsDate, IsEmail, IsString } from 'class-validator';
+import { IsBoolean, IsDate, IsString } from 'class-validator';
 import mongoose, { Document, ObjectId, Schema } from 'mongoose';
 
 import { MODELS, TokenTypes } from '@common/constants';
@@ -10,7 +10,7 @@ export class IToken extends ITimesStamp {
   token: string;
 
   @IsString()
-  userId: string;
+  userId: ObjectId;
 
   @IsString()
   type: string;
@@ -38,7 +38,7 @@ const tokenSchema: Schema = new Schema(
     },
     type: {
       type: String,
-      enum: [TokenTypes.ACCESS, TokenTypes.REFRESH],
+      enum: [TokenTypes.ACCESS, TokenTypes.REFRESH, TokenTypes.RESET_PASSWORD],
       required: true,
     },
     expires: {

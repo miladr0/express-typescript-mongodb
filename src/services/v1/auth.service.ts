@@ -47,4 +47,22 @@ export class AuthService {
       throw new UnauthorizedError('Please authenticate');
     }
   }
+
+  async resetPassword(token: string, password: string) {
+    try {
+      const tokenDoc = await this.tokenService.verifyToken(token, TokenTypes.RESET_PASSWORD);
+      const user = await this.userService.getById(tokenDoc.userId);
+      if (!user) {
+        throw new NotFoundError('User not found');
+      }
+
+      await this.userService.updateById(user.id, { password });
+      await this.tokenModel.deleteMany({ userId: user.id });
+    } catch (error) {
+      if (error.message === 'Token not found' || error.message === 'jwt expired') {
+        throw new UnauthorizedError('Token not found');
+      }
+      throw error;
+    }
+  }
 }

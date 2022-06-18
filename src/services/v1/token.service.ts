@@ -1,13 +1,18 @@
 import jsonwebtoken from 'jsonwebtoken';
 import moment from 'moment';
 import { ObjectId } from 'mongoose';
+import { NotFoundError } from 'routing-controllers';
 
 import { TokenTypes } from '@common/constants';
 import { jwt } from '@config';
 import Tokens from '@models/tokens.model';
 import { IUserSchema } from '@models/users.model';
 
+import { UserService } from './user.service';
+
 export class TokenService {
+  private readonly userService = new UserService();
+
   async generateAuthTokens(user: IUserSchema) {
     const accessTokenExpire = moment().add(jwt.accessExpireIn as moment.unitOfTime.DurationConstructor, jwt.accessExpireFormat);
     const accessToken = this.generateToken(user.id, accessTokenExpire.unix(), TokenTypes.ACCESS);
@@ -57,5 +62,18 @@ export class TokenService {
       throw new Error('Token not found');
     }
     return tokenDoc;
+  }
+
+  async generateResetPasswordToken(email: string) {
+    const user = await this.userService.getUserByEmail(email);
+    if (!user) {
+      throw new NotFoundError('User not exists with this email');
+    }
+
+    const expireIn = moment().add(jwt.resetPasswordExpireIn as moment.unitOfTime.DurationConstructor, jwt.resetPasswordExpireFormat);
+    const resetPasswordToken = this.generateToken(user.id, expireIn.unix(), TokenTypes.RESET_PASSWORD);
+    await this.saveToken(resetPasswordToken, user.id, expireIn.toDate(), TokenTypes.RESET_PASSWORD);
+
+    return resetPasswordToken;
   }
 }

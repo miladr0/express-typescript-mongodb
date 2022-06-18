@@ -1,8 +1,9 @@
 import bcrypt from 'bcrypt';
+import { ObjectId } from 'mongoose';
 import { BadRequestError } from 'routing-controllers';
 
 import CRUD from '@common/interfaces/crud.interface';
-import Users, { IUserSchema } from '@models/users.model';
+import Users, { IUser, IUserSchema } from '@models/users.model';
 import RegisterDto from '@v1/auth/dtos/register.dto';
 
 export class UserService implements CRUD<IUserSchema> {
@@ -32,8 +33,24 @@ export class UserService implements CRUD<IUserSchema> {
     return await bcrypt.compare(inputPass, userPass);
   }
 
-  async getById(id: string): Promise<IUserSchema | null> {
+  async getById(id: ObjectId): Promise<IUserSchema | null> {
     return await this.userModel.findById(id);
+  }
+
+  async updateById(id: ObjectId, updateBody: Partial<IUser>): Promise<IUserSchema | null> {
+    // prevent user change his email
+    if (updateBody.email) {
+      delete updateBody.email;
+    }
+
+    const user = await this.getById(id);
+    if (!user) {
+      throw new BadRequestError('User not found');
+    }
+
+    Object.assign(user, updateBody);
+    await user.save();
+    return user;
   }
 
   async findAll(limit = 10, page = 0) {

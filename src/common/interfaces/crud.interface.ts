@@ -1,4 +1,4 @@
-import { LeanDocument } from 'mongoose';
+import { LeanDocument, ObjectId } from 'mongoose';
 
 export default interface CRUD<T> {
   findAll: (
@@ -12,5 +12,5 @@ export default interface CRUD<T> {
       page: number;
     };
   }>;
-  getById: (id: string) => Promise<T | null>;
+  getById: (id: ObjectId) => Promise<T | null>;
 }
