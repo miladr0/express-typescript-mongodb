@@ -2,13 +2,13 @@
   "name": "api",
   "version": "1.0.0",
   "main": "dist/index.js",
-  "private": true,
+  "private": false,
   "repository": {
     "type": "git",
-    "url": "https://github.com/miladr0/xcoin-be.git"
+    "url": "https://github.com/miladr0/express-typescript-mongodb.git"
   },
-  "bug": "https://github.com/miladr0/xcoin-be/issues",
-  "homepage": "https://github.com/miladr0/xcoin-be",
+  "bug": "https://github.com/miladr0/express-typescript-mongodb/issues",
+  "homepage": "https://github.com/miladr0/express-typescript-mongodb",
   "author": {
     "name": "Milad",
     "email": "miladr0r@gmail.com",
@@ -16,7 +16,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "start": "yarn build && cross-env NODE_ENV=production node dist/index.js",
+    "start": "yarn build && cross-env NODE_ENV=development node dist/index.js",
     "dev": "cross-env NODE_ENV=development ts-node-dev -r tsconfig-paths/register src/index.ts",
     "prod": "yarn run build && pm2 start ecosystem.config.js --only prod_api",
     "seed": "cross-env NODE_ENV=development ts-node -r tsconfig-paths/register src/scripts/seed.ts",
@@ -53,7 +53,8 @@
     "reflect-metadata": "^0.1.13",
     "routing-controllers": "^0.9.0",
     "routing-controllers-openapi": "^3.1.0",
-    "swagger-ui-express": "^4.4.0"
+    "swagger-ui-express": "^4.4.0",
+    "xss-clean": "^0.1.1"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.1.0",

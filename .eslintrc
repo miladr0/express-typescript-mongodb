@@ -15,9 +15,9 @@
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/ban-types": "off",
       "@typescript-eslint/no-var-requires": "off",
-      "simple-import-sort/exports": "error",
+      "simple-import-sort/exports": "warn",
       "simple-import-sort/imports": [
-        "error",
+        "warn",
         {
           "groups": [
             ["^@?\\w"],
