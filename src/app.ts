@@ -1,3 +1,7 @@
+// eslint-disable-next-line simple-import-sort/imports
+import 'reflect-metadata';
+import { CORS_ORIGINS, CREDENTIALS, DBURL, isProduction, PORT, SENTRY_DSN, jwtStrategy } from './config';
+
 import * as Sentry from '@sentry/node';
 import bodyParser from 'body-parser';
 import { defaultMetadataStorage as classTransformerDefaultMetadataStorage } from 'class-transformer/cjs/storage';
@@ -9,14 +13,13 @@ import helmet from 'helmet';
 import hpp from 'hpp';
 import http from 'http';
 import mongoose from 'mongoose';
+import passport from 'passport';
 import { getMetadataArgsStorage, useExpressServer } from 'routing-controllers';
 import { routingControllersToSpec } from 'routing-controllers-openapi';
 import swaggerUi from 'swagger-ui-express';
+import xss from 'xss-clean';
 
 import handlingErrorsMiddleware from './middlewares/handlingErrors.middleware';
-import { CORS_ORIGINS, CREDENTIALS, DBURL, isProduction, PORT, SENTRY_DSN } from './config';
-
-import 'reflect-metadata';
 
 let serverConnection: http.Server;
 
@@ -49,8 +52,14 @@ export default class App {
 
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: true }));
+    // sanitize user data
     this.app.use(hpp());
+    this.app.use(xss());
     this.app.use(cookieParser());
+
+    // jwt authentication
+    this.app.use(passport.initialize());
+    passport.use('jwt', jwtStrategy);
   }
 
   private initRoutes(controllers: Function[]) {
