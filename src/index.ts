@@ -1,8 +1,8 @@
-import { AuthControllerV1 } from '@v1/index';
+import { AuthControllerV1, UserControllerV1 } from '@v1/index';
 
 import App from './app';
 
-const server = new App([AuthControllerV1]);
+const server = new App([AuthControllerV1, UserControllerV1]);
 
 (async () => {
   await server.initServerWithDB();
