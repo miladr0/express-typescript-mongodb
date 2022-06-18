@@ -1,5 +1,4 @@
 import dotenv from 'dotenv';
-
 dotenv.config({ path: `.env.${process.env.NODE_ENV || 'development'}.local` });
 
 const checkEnv = (envVar: string, defaultValue?: string) => {
@@ -28,4 +27,8 @@ export const jwt = {
   accessExpireFormat: checkEnv('JWT_ACCESS_EXPIRE_FORMAT'),
   refreshExpireIn: checkEnv('JWT_REFRESH_EXPIRE_IN'),
   refreshExpireFormat: checkEnv('JWT_REFRESH_EXPIRE_FORMAT'),
+  resetPasswordExpireIn: checkEnv('JWT_RESET_PASSWORD_EXPIRE_IN'),
+  resetPasswordExpireFormat: checkEnv('JWT_RESET_PASSWORD_EXPIRE_FORMAT'),
 };
+
+export * from './passport';
