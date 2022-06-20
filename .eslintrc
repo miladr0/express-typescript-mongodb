@@ -21,7 +21,7 @@
         {
           "groups": [
             ["^@?\\w"],
-            ["^(@common|@models|@v1|@config|@app|@middlewares|@exceptions|@utils|@services)(/.*|$)"],
+            ["^(@common|@models|@v1|@config|@app|@middlewares|@exceptions|@utils|@services|@__tests__)(/.*|$)"],
             // Parent imports. Put `..` last.
             ["^\\.\\.(?!/?$)", "^\\.\\./?$"],
             // Other relative imports. Put same-folder imports and `.` last.
