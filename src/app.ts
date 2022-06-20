@@ -1,11 +1,10 @@
 // eslint-disable-next-line simple-import-sort/imports
 import 'reflect-metadata';
-import { CORS_ORIGINS, CREDENTIALS, DBURL, isProduction, PORT, SENTRY_DSN, jwtStrategy } from './config';
+import { CORS_ORIGINS, CREDENTIALS, MONGO_URI, DATABASE, isProduction, PORT, SENTRY_DSN, jwtStrategy } from './config';
 
 import * as Sentry from '@sentry/node';
 import bodyParser from 'body-parser';
-import { defaultMetadataStorage as classTransformerDefaultMetadataStorage } from 'class-transformer/cjs/storage';
-import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
+
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express, { Application, ErrorRequestHandler, RequestHandler } from 'express';
@@ -14,9 +13,7 @@ import hpp from 'hpp';
 import http from 'http';
 import mongoose from 'mongoose';
 import passport from 'passport';
-import { getMetadataArgsStorage, useExpressServer } from 'routing-controllers';
-import { routingControllersToSpec } from 'routing-controllers-openapi';
-import swaggerUi from 'swagger-ui-express';
+import { useExpressServer } from 'routing-controllers';
 import xss from 'xss-clean';
 
 import handlingErrorsMiddleware from './middlewares/handlingErrors.middleware';
@@ -26,16 +23,17 @@ let serverConnection: http.Server;
 export default class App {
   private app: Application;
   private port: string | number;
+  private controllers: Function[] = [];
 
   constructor(controllers: Function[]) {
     this.app = express();
     this.port = PORT || 8080;
+    this.controllers = controllers;
 
     this.initSentry();
     this.initMiddlewares();
     this.initRoutes(controllers);
 
-    this.initSwagger(controllers);
     this.initHandlingErrors();
   }
 
@@ -74,37 +72,6 @@ export default class App {
     });
   }
 
-  private initSwagger(controllers: Function[]) {
-    const schemas = validationMetadatasToSchemas({
-      classTransformerMetadataStorage: classTransformerDefaultMetadataStorage,
-      refPointerPrefix: '#/components/schemas/',
-    });
-
-    const routingControllersOptions = {
-      controllers: controllers,
-    };
-
-    const storage = getMetadataArgsStorage();
-    const spec = routingControllersToSpec(storage, routingControllersOptions, {
-      components: {
-        schemas,
-        securitySchemes: {
-          basicAuth: {
-            scheme: 'basic',
-            type: 'http',
-          },
-        },
-      },
-      info: {
-        description: 'API Generated with `routing-controllers-openapi` package',
-        title: 'API',
-        version: '1.0.0',
-      },
-    });
-
-    this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
-  }
-
   private initHandlingErrors() {
     if (isProduction) {
       // The error handler must be before any other error middleware and after all controllers
@@ -114,7 +81,7 @@ export default class App {
   }
 
   static async initDB() {
-    await mongoose.connect(DBURL);
+    await mongoose.connect(`${MONGO_URI}/${DATABASE}`);
   }
 
   static async closeDB() {
@@ -146,4 +113,8 @@ export default class App {
   public getServer = () => {
     return this.app;
   };
+
+  public get getControllers() {
+    return this.controllers;
+  }
 }
