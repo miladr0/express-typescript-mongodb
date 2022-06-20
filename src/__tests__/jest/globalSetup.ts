@@ -12,7 +12,7 @@ export default async function globalSetup() {
     (global as any).__MONGOINSTANCE = instance;
     process.env.MONGO_URI = uri.slice(0, uri.lastIndexOf('/'));
   } else {
-    process.env.MONGO_URI = `mongodb://${config.IP}:${config.Port}`;
+    process.env.MONGO_URI = config.MongoURI;
   }
 
   // The following is to make sure the database is clean before an test starts

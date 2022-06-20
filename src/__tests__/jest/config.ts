@@ -1,8 +1,7 @@
 const config = {
   Memory: true,
-  IP: '127.0.0.1',
-  Port: '27017',
-  Database: 'xcoin_test',
+  MongoURI: 'mongodb://localhost:27017',
+  Database: 'express_typescript_boilerplate_test',
 };
 
 export default config;

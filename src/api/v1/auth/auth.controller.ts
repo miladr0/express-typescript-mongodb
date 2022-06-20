@@ -77,7 +77,6 @@ export class AuthController {
   async resetPassword(@Body() userData: ResetPasswordDto) {
     await this.authService.resetPassword(userData.token, userData.password);
 
-    // should use email service to send the token to email owner, not return it!
     return { message: 'password successfully updated' };
   }
 }

@@ -13,11 +13,13 @@ const checkEnv = (envVar: string, defaultValue?: string) => {
 };
 
 export const PORT: number = parseInt(checkEnv('PORT'), 10);
-export const DBURL: string = checkEnv('DBURL');
+export const MONGO_URI: string = checkEnv('MONGO_URI');
+export const DATABASE: string = checkEnv('DATABASE');
 export const CORS_ORIGINS = JSON.parse(checkEnv('CORS_ORIGINS'));
 export const CREDENTIALS = checkEnv('CREDENTIALS') === 'true';
 
 export const isProduction = checkEnv('NODE_ENV') === 'production';
+export const isTest = checkEnv('NODE_ENV') === 'test';
 
 export const SENTRY_DSN = checkEnv('SENTRY_DSN');
 
