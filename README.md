@@ -1,4 +1,8 @@
-🎫 A Class Base Routing Boilerplate for Node.js, Express.js, MongoDB with Typescript
+🎫 A Class Base Routing Boilerplate for Node.js, Express.js, MongoDB with Typescript.
+
+### What is it?
+Try to implement A  Class Base Routing with clean structure and scalable boilerplate in Node.js,Express.js and Typescript.
+
 ### Features
 
 - **Sentry** catch errors.
@@ -7,8 +11,10 @@
 - **Validation** using [class-validator](https://github.com/typestack/class-validator)
 - **class base routing** using [routing-controllers](https://github.com/typestack/routing-controllers)
 - **Authentication** - using [Passport.js](https://github.com/jaredhanson/passport) [passport-jwt](https://github.com/mikenicholson/passport-jwt) which is compatible with Express.js and is a authentication middleware for Node.js.
-
+- **Database** using [mongoose](https://mongoosejs.com/) odm for interacting with mongoDB.
 - **run testing** using [Jest](https://jestjs.io/)
+- **linting** using [ESLint](https://eslint.org/)
+- **prettier** using [Prettier](https://prettier.io/)
  
 
 <br />
