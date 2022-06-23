@@ -1,4 +1,4 @@
-import { plainToInstance } from 'class-transformer';
+import { classToPlain } from 'class-transformer';
 import { validate, ValidationError } from 'class-validator';
 import { RequestHandler } from 'express';
 
@@ -19,7 +19,7 @@ export const validationMiddleware = (
   forbidNonWhitelisted = true,
 ): RequestHandler => {
   return (req, res, next) => {
-    const obj = plainToInstance(type, req[value]);
+    const obj = classToPlain(type, req[value]);
     validate(obj, {
       skipMissingProperties,
       whitelist,
